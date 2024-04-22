@@ -1,0 +1,851 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNMx/FchnUXesa6bdgmQPr5",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/farnazcs/quantum_circuit/blob/main/tutorial1%262\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "try:\n",
+        "    import cirq\n",
+        "except ImportError:\n",
+        "    print(\"installing cirq...\")\n",
+        "    !pip install --quiet cirq\n",
+        "    print(\"installed cirq.\")\n",
+        "    import cirq\n",
+        "\n",
+        "import cirq_google"
+      ],
+      "metadata": {
+        "id": "JQ7wOL70ObGj"
+      },
+      "execution_count": 24,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "myqubit0 = cirq.LineQubit(0)\n",
+        "myqubit1 = cirq.LineQubit(1)\n",
+        "myqubit2 = cirq.LineQubit(2)\n",
+        "myqubit3 = cirq.LineQubit(3)\n",
+        "myqubit4 = cirq.LineQubit(4)\n",
+        "myqubit5 = cirq.LineQubit(5)\n",
+        "\n",
+        "type(myqubit2)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 186
+        },
+        "id": "inKU-4eTR-CC",
+        "outputId": "e5a1bd76-babf-4c15-f86d-33afc1fd6c7b"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "cirq.devices.line_qubit.LineQubit"
+            ],
+            "text/html": [
+              "<div style=\"max-width:800px; border: 1px solid var(--colab-border-color);\"><style>\n",
+              "      pre.function-repr-contents {\n",
+              "        overflow-x: auto;\n",
+              "        padding: 8px 12px;\n",
+              "        max-height: 500px;\n",
+              "      }\n",
+              "\n",
+              "      pre.function-repr-contents.function-repr-contents-collapsed {\n",
+              "        cursor: pointer;\n",
+              "        max-height: 100px;\n",
+              "      }\n",
+              "    </style>\n",
+              "    <pre style=\"white-space: initial; background:\n",
+              "         var(--colab-secondary-surface-color); padding: 8px 12px;\n",
+              "         border-bottom: 1px solid var(--colab-border-color);\"><b>cirq.devices.line_qubit.LineQubit</b><br/>def __init__(x: int) -&gt; None</pre><pre class=\"function-repr-contents function-repr-contents-collapsed\" style=\"\"><a class=\"filepath\" style=\"display:none\" href=\"#\">/usr/local/lib/python3.10/dist-packages/cirq/devices/line_qubit.py</a>A qubit on a 1d lattice with nearest-neighbor connectivity.\n",
+              "\n",
+              "LineQubits have a single attribute, and integer coordinate &#x27;x&#x27;, which\n",
+              "identifies the qubits location on the line. LineQubits are ordered by\n",
+              "this integer.\n",
+              "\n",
+              "One can construct new `cirq.LineQubit`s by adding or subtracting integers:\n",
+              "\n",
+              "&gt;&gt;&gt; cirq.LineQubit(1) + 3\n",
+              "cirq.LineQubit(4)\n",
+              "\n",
+              "&gt;&gt;&gt; cirq.LineQubit(2) - 1\n",
+              "cirq.LineQubit(1)</pre>\n",
+              "      <script>\n",
+              "      if (google.colab.kernel.accessAllowed && google.colab.files && google.colab.files.view) {\n",
+              "        for (const element of document.querySelectorAll('.filepath')) {\n",
+              "          element.style.display = 'block'\n",
+              "          element.onclick = (event) => {\n",
+              "            event.preventDefault();\n",
+              "            event.stopPropagation();\n",
+              "            google.colab.files.view(element.textContent, 230);\n",
+              "          };\n",
+              "        }\n",
+              "      }\n",
+              "      for (const element of document.querySelectorAll('.function-repr-contents')) {\n",
+              "        element.onclick = (event) => {\n",
+              "          event.preventDefault();\n",
+              "          event.stopPropagation();\n",
+              "          element.classList.toggle('function-repr-contents-collapsed');\n",
+              "        };\n",
+              "      }\n",
+              "      </script>\n",
+              "      </div>"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 4
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "myqubits = cirq.LineQubit.range(6)\n",
+        "myqubits"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "PnrzjBoViSuw",
+        "outputId": "0b98e80b-d54b-47cc-f356-de94b3fa7df7"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[cirq.LineQubit(0),\n",
+              " cirq.LineQubit(1),\n",
+              " cirq.LineQubit(2),\n",
+              " cirq.LineQubit(3),\n",
+              " cirq.LineQubit(4),\n",
+              " cirq.LineQubit(5)]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 5
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "myqubit0 = cirq.GridQubit(0,1)\n",
+        "print(type(myqubit0))\n",
+        "print(myqubit0)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "2jxgVGRsi0Qf",
+        "outputId": "88769577-3420-4022-991a-96fb99498829"
+      },
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "<class 'cirq.devices.grid_qubit.GridQubit'>\n",
+            "q(0, 1)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "myqubits = cirq.GridQubit.rect(rows=3, cols=2)\n",
+        "myqubits"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Wqd0xMjWp1Oe",
+        "outputId": "25fbb84a-252e-454d-fe79-90a9133dcdd6"
+      },
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[cirq.GridQubit(0, 0),\n",
+              " cirq.GridQubit(0, 1),\n",
+              " cirq.GridQubit(1, 0),\n",
+              " cirq.GridQubit(1, 1),\n",
+              " cirq.GridQubit(2, 0),\n",
+              " cirq.GridQubit(2, 1)]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 15
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "myqubits = cirq.GridQubit.square(3)\n",
+        "myqubits"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Q6mBAGW9q72j",
+        "outputId": "458890ab-3ca3-4621-bf94-b78bd660df9f"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[cirq.GridQubit(0, 0),\n",
+              " cirq.GridQubit(0, 1),\n",
+              " cirq.GridQubit(0, 2),\n",
+              " cirq.GridQubit(1, 0),\n",
+              " cirq.GridQubit(1, 1),\n",
+              " cirq.GridQubit(1, 2),\n",
+              " cirq.GridQubit(2, 0),\n",
+              " cirq.GridQubit(2, 1),\n",
+              " cirq.GridQubit(2, 2)]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 16
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "myqubit0 = cirq.NamedQubit(\"x0\")\n",
+        "myqubit1 = cirq.NamedQubit(\"x1\")\n",
+        "myqubit2 = cirq.NamedQubit(\"x2\")\n",
+        "myqubit3 = cirq.NamedQubit(\"x3\")\n",
+        "myqubit4 = cirq.NamedQubit(\"x4\")\n",
+        "\n",
+        "print(myqubit1)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5V1t_vV-rSss",
+        "outputId": "e734fe6c-78d4-4990-a99b-02b39756c7d3"
+      },
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "x1\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "myqubits = cirq.LineQubit.range(6)\n",
+        "#making empty circuit\n",
+        "mycircuit = cirq.Circuit()\n",
+        "mycircuit.append(cirq.H(myqubits[0]))\n",
+        "mycircuit.append(cirq.H(myqubits[1]))\n",
+        "mycircuit.append(cirq.H(myqubits[2]))\n",
+        "mycircuit.append(cirq.H(myqubits[3]))\n",
+        "mycircuit.append(cirq.H(myqubits[4]))\n",
+        "mycircuit.append(cirq.H(myqubits[5]))\n",
+        "print(mycircuit)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "KAH0mrTXv3we",
+        "outputId": "504d536e-2b25-45dc-823c-95e414488457"
+      },
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "0: ───H───\n",
+            "\n",
+            "1: ───H───\n",
+            "\n",
+            "2: ───H───\n",
+            "\n",
+            "3: ───H───\n",
+            "\n",
+            "4: ───H───\n",
+            "\n",
+            "5: ───H───\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "myqubits = cirq.LineQubit.range(6)\n",
+        "mycircuit = cirq.Circuit([cirq.H(qubit) for qubit in myqubits])\n",
+        "print(mycircuit)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0_OvV67lxYIc",
+        "outputId": "87b63d4f-ea53-420e-e2e8-457e867025d8"
+      },
+      "execution_count": 21,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "0: ───H───\n",
+            "\n",
+            "1: ───H───\n",
+            "\n",
+            "2: ───H───\n",
+            "\n",
+            "3: ───H───\n",
+            "\n",
+            "4: ───H───\n",
+            "\n",
+            "5: ───H───\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#or shorter way\n",
+        "mycircuit = cirq.Circuit(cirq.H.on_each(myqubits))\n",
+        "mycircuit"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 208
+        },
+        "id": "5UW1BzXL0jNj",
+        "outputId": "558f8171-73bf-4573-e9e5-24af63bc1aef"
+      },
+      "execution_count": 22,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0: ───H───\n",
+              "\n",
+              "1: ───H───\n",
+              "\n",
+              "2: ───H───\n",
+              "\n",
+              "3: ───H───\n",
+              "\n",
+              "4: ───H───\n",
+              "\n",
+              "5: ───H───"
+            ],
+            "text/html": [
+              "<pre style=\"overflow: auto; white-space: pre;\">0: ───H───\n",
+              "\n",
+              "1: ───H───\n",
+              "\n",
+              "2: ───H───\n",
+              "\n",
+              "3: ───H───\n",
+              "\n",
+              "4: ───H───\n",
+              "\n",
+              "5: ───H───</pre>"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 22
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mycircuit = cirq.Circuit(cirq.X(myqubits[5]))\n",
+        "mycircuit.append(cirq.H.on_each(myqubits))\n",
+        "\n",
+        "mycircuit"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 208
+        },
+        "id": "sJ1LqT3r06g7",
+        "outputId": "d0f48a92-0bf9-404e-8267-4b56908c4ebe"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0: ───H───────\n",
+              "\n",
+              "1: ───H───────\n",
+              "\n",
+              "2: ───H───────\n",
+              "\n",
+              "3: ───H───────\n",
+              "\n",
+              "4: ───H───────\n",
+              "\n",
+              "5: ───X───H───"
+            ],
+            "text/html": [
+              "<pre style=\"overflow: auto; white-space: pre;\">0: ───H───────\n",
+              "\n",
+              "1: ───H───────\n",
+              "\n",
+              "2: ───H───────\n",
+              "\n",
+              "3: ───H───────\n",
+              "\n",
+              "4: ───H───────\n",
+              "\n",
+              "5: ───X───H───</pre>"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 9
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "moment0 = cirq.Moment(cirq.X(myqubits[5]))\n",
+        "moment1 = cirq.Moment(cirq.H.on_each(myqubits))\n",
+        "mycircuit = cirq.Circuit()\n",
+        "mycircuit.append(moment0)\n",
+        "mycircuit.append(moment1)\n",
+        "\n",
+        "mycircuit"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 208
+        },
+        "id": "G58O8ZV_ChHl",
+        "outputId": "e69b3656-394f-4721-c345-515f598acf63"
+      },
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0: ───────H───\n",
+              "\n",
+              "1: ───────H───\n",
+              "\n",
+              "2: ───────H───\n",
+              "\n",
+              "3: ───────H───\n",
+              "\n",
+              "4: ───────H───\n",
+              "\n",
+              "5: ───X───H───"
+            ],
+            "text/html": [
+              "<pre style=\"overflow: auto; white-space: pre;\">0: ───────H───\n",
+              "\n",
+              "1: ───────H───\n",
+              "\n",
+              "2: ───────H───\n",
+              "\n",
+              "3: ───────H───\n",
+              "\n",
+              "4: ───────H───\n",
+              "\n",
+              "5: ───X───H───</pre>"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 17
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "try:\n",
+        "    import cirq\n",
+        "except ImportError:\n",
+        "    print(\"installing cirq...\")\n",
+        "    !pip install --quiet cirq\n",
+        "    print(\"installed cirq.\")\n",
+        "    import cirq\n",
+        "\n",
+        "import numpy as np"
+      ],
+      "metadata": {
+        "id": "zHmQZ2U7DtvT"
+      },
+      "execution_count": 3,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#import cirq_google\n",
+        "\n",
+        "#creat 6 qubits\n",
+        "myqubits = cirq.LineQubit.range(6)\n",
+        "mycircuit = cirq.Circuit()\n",
+        "\n",
+        "#reset all of them to state 0, in a for loop, and creat the moment for that set of the reset\n",
+        "reset_qubits = cirq.Moment([cirq.reset(qubit) for qubit in myqubits])\n",
+        "type(reset_qubits)\n",
+        "\n",
+        "#append that moment to the circuit\n",
+        "mycircuit.append(reset_qubits)\n",
+        "\n",
+        "#flip the last qubit to state 1\n",
+        "setup_detect_qubit = cirq.X(myqubits[-1])\n",
+        "\n",
+        "#now append that to the circuit\n",
+        "mycircuit.append(setup_detect_qubit)\n",
+        "\n",
+        "#add H gate, and append a moment\n",
+        "H_gates = cirq.Moment(cirq.H.on_each(myqubits))\n",
+        "mycircuit.append(H_gates)\n",
+        "\n",
+        "#for cNOT gates:\n",
+        "mycircuit.append([\n",
+        "                  cirq.CNOT(myqubits[0], myqubits[5]),\n",
+        "                  cirq.CNOT(myqubits[1], myqubits[5]),\n",
+        "                  cirq.CNOT(myqubits[4], myqubits[5])\n",
+        "])\n",
+        "\n",
+        "mycircuit.append(H_gates)\n",
+        "\n",
+        "#now add measurement at the end\n",
+        "\n",
+        "meas_gates = cirq.Moment([cirq.measure(qubit) for qubit in myqubits])\n",
+        "mycircuit.append(meas_gates)\n",
+        "\n",
+        "#now simulate\n",
+        "sim = cirq.Simulator()\n",
+        "result= sim.run(mycircuit)\n",
+        "\n",
+        "print(result)\n",
+        "print(mycircuit)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Kz180ViGCl7r",
+        "outputId": "8b9484f8-916d-4222-ec22-579627866de3"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "q(0)=1\n",
+            "q(1)=1\n",
+            "q(2)=0\n",
+            "q(3)=0\n",
+            "q(4)=1\n",
+            "q(5)=1\n",
+            "0: ───R───────H───@───────────H───M───\n",
+            "                  │\n",
+            "1: ───R───────H───┼───@───────H───M───\n",
+            "                  │   │\n",
+            "2: ───R───────H───┼───┼───────H───M───\n",
+            "                  │   │\n",
+            "3: ───R───────H───┼───┼───────H───M───\n",
+            "                  │   │\n",
+            "4: ───R───────H───┼───┼───@───H───M───\n",
+            "                  │   │   │\n",
+            "5: ───R───X───H───X───X───X───H───M───\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "cx_pattern = \"11001\"\n",
+        "n = len(cx_pattern)\n",
+        "myqubits = cirq.LineQubit.range(n+1)\n",
+        "print(myqubits)\n",
+        "cx_qubits = [myqubits[x] for x in range(n) if cx_pattern[x] == \"1\"]\n",
+        "target_qubit = myqubits[-1]\n",
+        "\n",
+        "mycircuit = cirq.Circuit(\n",
+        "    [\n",
+        "        cirq.reset_each(*myqubits),\n",
+        "        cirq.X(target_qubit),\n",
+        "        cirq.Moment(cirq.H.on_each(myqubits)),\n",
+        "        cirq.CNOT.on_each(zip(cx_qubits, [target_qubit]*len(cx_qubits))),\n",
+        "        cirq.Moment(cirq.H.on_each(myqubits))\n",
+        "    ]\n",
+        ")\n",
+        "\n",
+        "\n",
+        "meas_gates = cirq.Moment([cirq.measure(qubit) for qubit in myqubits])\n",
+        "mycircuit.append(meas_gates)\n",
+        "\n",
+        "#now simulate\n",
+        "sim = cirq.Simulator()\n",
+        "result= sim.run(mycircuit, repetitions=2)\n",
+        "\n",
+        "print(result)\n",
+        "print(mycircuit)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "uuq3T_0MPyRu",
+        "outputId": "e583871c-7729-4394-e2b4-57be2f79b4bd"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[cirq.LineQubit(0), cirq.LineQubit(1), cirq.LineQubit(2), cirq.LineQubit(3), cirq.LineQubit(4), cirq.LineQubit(5)]\n",
+            "q(0)=111111111111\n",
+            "q(1)=111111111111\n",
+            "q(2)=000000000000\n",
+            "q(3)=000000000000\n",
+            "q(4)=111111111111\n",
+            "q(5)=111111111111\n",
+            "0: ───────H───@───────────H───M───\n",
+            "              │\n",
+            "1: ───────H───┼───@───────H───M───\n",
+            "              │   │\n",
+            "2: ───────H───┼───┼───────H───M───\n",
+            "              │   │\n",
+            "3: ───────H───┼───┼───────H───M───\n",
+            "              │   │\n",
+            "4: ───────H───┼───┼───@───H───M───\n",
+            "              │   │   │\n",
+            "5: ───X───H───X───X───X───H───M───\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import cirq\n",
+        "\n",
+        "# Pick a qubit.\n",
+        "qubit = cirq.GridQubit(0, 0)\n",
+        "print(qubit)\n",
+        "# Create a circuit\n",
+        "circuit = cirq.Circuit(\n",
+        "    cirq.X(qubit)**0.5,  # Square root of NOT.\n",
+        "    cirq.measure(qubit, key='m')  # Measurement.\n",
+        ")\n",
+        "print(\"Circuit:\")\n",
+        "print(circuit)\n",
+        "\n",
+        "# Simulate the circuit several times.\n",
+        "simulator = cirq.Simulator()\n",
+        "result = simulator.run(circuit, repetitions=20)\n",
+        "print(qubit)\n",
+        "print(\"Results:\")\n",
+        "print(result)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "KNtHMRJIEYSW",
+        "outputId": "9f8c7089-262c-4822-f088-794f8d963f30"
+      },
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "q(0, 0)\n",
+            "Circuit:\n",
+            "(0, 0): ───X^0.5───M('m')───\n",
+            "q(0, 0)\n",
+            "Results:\n",
+            "m=11101011101001101110\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "\n",
+        "matrix_X = cirq.unitary(cirq.X)\n",
+        "matrix_H_normalized = cirq.unitary(cirq.H)*np.sqrt(2)\n",
+        "matrix_S = cirq.unitary(cirq.S**(0.5))\n",
+        "\n",
+        "\n",
+        "print (matrix_X)\n",
+        "print(matrix_H_normalized)\n",
+        "print(matrix_S)\n",
+        "cirq.unitary(cirq.rz(np.pi/2))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "inl5g3INEvXA",
+        "outputId": "7e711245-02e8-422a-e3d6-2acacabac723"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[[0.+0.j 1.+0.j]\n",
+            " [1.+0.j 0.+0.j]]\n",
+            "[[ 1.+0.j  1.+0.j]\n",
+            " [ 1.+0.j -1.+0.j]]\n",
+            "[[1.        +0.j         0.        +0.j        ]\n",
+            " [0.        +0.j         0.70710678+0.70710678j]]\n"
+          ]
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[0.70710678-0.70710678j, 0.        +0.j        ],\n",
+              "       [0.        +0.j        , 0.70710678+0.70710678j]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 3
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# our class has 3 methods in it\n",
+        "class MyGate(cirq.Gate):\n",
+        "  def __init__(self):\n",
+        "     super(MyGate, self)\n",
+        "\n",
+        " # how many qubits this gates acts on\n",
+        "  def _num_qubits_self(self):\n",
+        "    return 1\n",
+        "\n",
+        "# Additional info to build the gate, _circuit_diagram.. shows how to print out the gates\n",
+        "  def _circuit_diagram_info_(self, args):\n",
+        "    return \"MyGate\""
+      ],
+      "metadata": {
+        "id": "q6GwTQYnEz8o"
+      },
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Building the gate with a known unitary matrix"
+      ],
+      "metadata": {
+        "id": "tS7ph-UcAsRF"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# our class has 3 methods in it\n",
+        "class MyGate(cirq.Gate):\n",
+        "  def __init__(self):\n",
+        "     super(MyGate, self)\n",
+        "\n",
+        " # how many qubits this gates acts on\n",
+        "  def _num_qubits_self(self):\n",
+        "    return 1\n",
+        "\n",
+        " # Define the shape of the quantum state vector after applying this gate\n",
+        "  def _qid_shape_(self):\n",
+        "        return (2,) * self.num_qubits()\n",
+        "\n",
+        "# Additional info to build the gate, _circuit_diagram.. shows how to print out the gates\n",
+        "\n",
+        "  def _unitary_(self):\n",
+        "    return np.array([\n",
+        "        [1,0],\n",
+        "        [0,1j]\n",
+        "    ])\n",
+        "\n",
+        "\n",
+        "  def _circuit_diagram_info_(self, args):\n",
+        "    return MyGate\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "QYlHOLtEArlS"
+      },
+      "execution_count": 30,
+      "outputs": []
+    }
+  ]
+}
