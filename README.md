@@ -1,4 +1,5 @@
-Quantum Circuit Simulations
+Quantum Circuit Simulations:
+
 This repository contains code snippets and examples that I've learned through various YouTube tutorials and website tutorials about quantum circuit simulations. 
 I've slightly modified some of the codes mentioned in the tutorials to resolve errors and explore more functionalities.
 The main website is: 
